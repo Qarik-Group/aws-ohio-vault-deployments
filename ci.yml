@@ -1,0 +1,47 @@
+pipeline:
+  name: vault-deployments
+
+  public:      false
+  tagged:      false
+  debug:       false
+  skip_upkeep: false
+
+  git:
+    owner:       starkandwayne
+    repo:        snw-deployments
+    private_key: (( vault "secret/concourse-ci/git-ssh/git@github.com/starkandwayne/snw-deployments:private" ))
+
+  vault:
+    role:   (( vault "secret/concourse-ci/vault-deployments/vault:role_id" ))
+    secret: (( vault "secret/concourse-ci/vault-deployments/vault:secret_id" ))
+    url:    https://10.10.1.240
+    verify: false
+
+  email:
+    to:   drnic@starkandwayne.com
+    from: drnic@starkandwayne.com
+    smtp:
+      username: asdf
+      password: (( vault "secret/concourse-ci/notifications/smtp/asdf/asdf:password" ))
+      host:     asdf
+      port:     1234
+
+  stemcells:
+    aws-xen-hvm: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+
+  boshes:
+    10.10.1.4:
+      alias:     10.10.1.4
+      url:       https://10.10.1.4:25555
+      ca_cert:   (( vault "secret/10.10.1.4/bosh/ssl/ca:certificate" ))
+      username:  admin
+      password:  (( vault "secret/10.10.1.4/bosh/users/concourse:password" ))
+      stemcells: 
+      - aws-xen-hvm
+
+  layouts:
+    default: |+
+      auto 10.10.1.4
+      10.10.1.4
+
+  errands: []
