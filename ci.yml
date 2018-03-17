@@ -8,7 +8,7 @@ pipeline:
 
   git:
     owner:       starkandwayne
-    repo:        snw-deployments
+    repo:        aws-ohio-vault-deployments
     private_key: (( vault "secret/concourse-ci/git-ssh/git@github.com/starkandwayne/snw-deployments:private" ))
 
   vault:
