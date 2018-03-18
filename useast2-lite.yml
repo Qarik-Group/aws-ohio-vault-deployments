@@ -1,7 +1,7 @@
 ---
 params:
-  env:   10.10.1.4
-  vault: 10.10.1.4/vault
+  env:   useast2-lite
+  vault: useast2-lite/vault
 
   # The name of the BOSH network to deploy Vault to
   vault_network: default

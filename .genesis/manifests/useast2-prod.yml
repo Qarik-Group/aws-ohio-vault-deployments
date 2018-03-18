@@ -22,7 +22,7 @@ instance_groups:
           key: REDACTED
   stemcell: default
   vm_type: minimal
-name: 10.10.1.4-vault
+name: useast2-prod-vault
 releases:
 - name: safe
   sha1: 0251b18836750728b89bb95e615992ec84e99978
