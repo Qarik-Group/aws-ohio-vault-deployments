@@ -1,0 +1,17 @@
+---
+params:
+  env:   useast2-lite
+  vault: useast2/lite/vault
+
+  # The name of the BOSH network to deploy Vault to
+  vault_network: default
+
+  # The name of the BOSH disk pool to give Vault
+  vault_disk_pool: 5GB
+
+  # The name of the BOSH VM type for Vault to use
+  vault_vm_type: minimal
+
+instance_groups:
+- name: vault
+  instances: 1
