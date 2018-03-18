@@ -17,14 +17,9 @@ pipeline:
     url:    https://10.10.1.240
     verify: false
 
-  email:
-    to:   drnic@starkandwayne.com
-    from: drnic@starkandwayne.com
-    smtp:
-      username: asdf
-      password: (( vault "secret/concourse-ci/notifications/smtp/asdf/asdf:password" ))
-      host:     asdf
-      port:     1234
+  slack:
+    webhook: https://this.does.not.exist
+    channel: "#dnd"
 
   stemcells:
     aws-xen-hvm: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
