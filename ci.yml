@@ -1,0 +1,52 @@
+pipeline:
+  name: aws-ohio-vault-deployments
+
+  public:      false
+  tagged:      false
+  debug:       false
+  skip_upkeep: false
+
+  git:
+    owner:       starkandwayne
+    repo:        aws-ohio-vault-deployments
+    private_key: (( vault "secret/concourse-ci/git-ssh/git@github.com/starkandwayne/aws-ohio-vault-deployments:private" ))
+
+  vault:
+    role:   (( vault "secret/concourse-ci/aws-ohio-vault-deployments/vault:role_id" ))
+    secret: (( vault "secret/concourse-ci/aws-ohio-vault-deployments/vault:secret_id" ))
+    url:    https://10.10.1.240
+    verify: false
+
+  slack:
+    webhook: "https://ignore.me"
+    channel: "#dnd"
+
+  stemcells:
+    warden-boshlite: bosh-warden-boshlite-ubuntu-trusty-go_agent
+    aws-xen-hvm: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+
+  boshes:
+    useast2-prod:
+      alias:     useast2-prod
+      url:       10.10.1.4:25555
+      ca_cert:   (( vault "secret/useast2/prod/bosh/ssl/ca:certificate" ))
+      username:  admin
+      password:  (( vault "secret/useast2/prod/bosh/users/concourse:password" ))
+      stemcells: 
+      - aws-xen-hvm
+
+    useast2-lite:
+      alias:     useast2-lite
+      url:       10.10.1.5:25555
+      ca_cert:   (( vault "secret/useast2/lite/bosh/ssl/ca:certificate" ))
+      username:  admin
+      password:  (( vault "secret/useast2/lite/bosh/users/concourse:password" ))
+      stemcells: 
+      - warden-boshlite
+
+  layouts:
+    default: |+
+      auto useast2-lite useast2-prod
+      useast2-lite -> useast2-prod
+
+  errands: []
