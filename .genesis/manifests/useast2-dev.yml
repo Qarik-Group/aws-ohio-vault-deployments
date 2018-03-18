@@ -1,0 +1,41 @@
+instance_groups:
+- azs:
+  - z1
+  - z2
+  - z3
+  instances: 1
+  jobs:
+  - name: vault
+    release: safe
+  name: vault
+  networks:
+  - name: default
+    static_ips:
+    - 10.10.1.240
+  persistent_disk_pool: 5GB
+  properties:
+    safe:
+      peer:
+        tls:
+          ca: REDACTED
+          certificate: REDACTED
+          key: REDACTED
+  stemcell: default
+  vm_type: minimal
+name: 10.10.1.4-vault
+releases:
+- name: safe
+  sha1: 0251b18836750728b89bb95e615992ec84e99978
+  url: https://github.com/cloudfoundry-community/safe-boshrelease/releases/download/v0.1.0/safe-0.1.0.tgz
+  version: 0.1.0
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+update:
+  canaries: 1
+  canary_watch_time: 30000-120000
+  max_in_flight: 1
+  serial: true
+  update_watch_time: 30000-120000
+
