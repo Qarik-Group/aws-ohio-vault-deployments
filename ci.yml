@@ -22,9 +22,18 @@ pipeline:
     channel: "#dnd"
 
   stemcells:
+    warden-boshlite: bosh-warden-boshlite-ubuntu-trusty-go_agent
     aws-xen-hvm: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
 
   boshes:
+    10.10.1.5:
+      alias:     10.10.1.5
+      url:       https://10.10.1.5:25555
+      ca_cert:   (( vault "secret/10.10.1.5/bosh/ssl/ca:certificate" ))
+      username:  admin
+      password:  (( vault "secret/10.10.1.5/bosh/users/concourse:password" ))
+      stemcells: 
+      - warden-boshlite
     10.10.1.4:
       alias:     10.10.1.4
       url:       https://10.10.1.4:25555
@@ -36,7 +45,7 @@ pipeline:
 
   layouts:
     default: |+
-      auto 10.10.1.4
-      10.10.1.4
+      auto 10.10.1.4 10.10.1.5
+      10.10.1.5 -> 10.10.1.4
 
   errands: []
